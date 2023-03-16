@@ -4,6 +4,8 @@
 import pygame as pg
 import random
 import os
+from random import randint
+# test comment for git hub
 # import settings 
 from settings import *
 from sprites import *
@@ -33,7 +35,13 @@ pewpews = pg.sprite.Group()
 # player is instantiated here
 player = Player()
 invader = MOB()
+invader.vel = vec(randint(1,8),randint(1,8))
 
+for i in range (0,10):
+    m= MOB()
+    m.vel = invader.vel = vec(randint(1,8),randint(1,8))
+    all_sprites.add(m)
+    enemies.add(m)
 # testSprite = Sprite()
 # testSprite.image = pg.Surface((50,50))
 # testSprite.image.fill(GREEN)
