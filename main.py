@@ -34,12 +34,14 @@ pewpews = pg.sprite.Group()
 
 # player is instantiated here
 player = Player()
+player.rect.x = 5
 invader = MOB()
+invader.image.fill((0,0,255))
 invader.vel = vec(randint(1,8),randint(1,8))
 
 for i in range (0,10):
-    m= MOB()
-    m.vel = invader.vel = vec(randint(1,8),randint(1,8))
+    m = MOB()
+    m.vel = invader.vel = vec(randint(10,50),randint(10,50))
     all_sprites.add(m)
     enemies.add(m)
 # testSprite = Sprite()
@@ -67,8 +69,9 @@ while RUNNING:
     all_sprites.update()
 
     blocks_hit_list = pg.sprite.spritecollide(player, enemies, True)
+
     for block in blocks_hit_list:
-        # print(enemies)
+        print(enemies)
         pass
     ### draw and render section of game loop
     screen.fill(BLUE)
