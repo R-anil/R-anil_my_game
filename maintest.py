@@ -6,23 +6,18 @@
 # testing github changes
 # I changed something - I changed something else tooooo!
 
-# This file was created by: Chris Cozort
 # Sources: http://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
 # Sources: 
 
 '''
-Game Structure:
+Game structure:
 GOALS; RULES; FEEDBACK; FREEDOM
 My goal is:
 
-To create bullets 
+moving platform 
 
-Slime mob
-A mob that bounces along the floor...
-Player gets bounced away when colliding 
 
 Reach goal:
-use images and animated sprites...
 
 '''
 
@@ -30,10 +25,9 @@ use images and animated sprites...
 import pygame as pg
 import os
 # import settings 
-from settingstest import *
-from spritestest import *
-from math import *
-from math import ceil
+from settings import *
+from settingstest import PLATFORM_LIST
+from sprites import *
 # from pg.sprite import Sprite
 
 # set up assets folders
@@ -59,8 +53,8 @@ class Game:
         self.platforms = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
         self.player = Player(self)
-        self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50, (150,150,150), "normal")
-        # self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50, (150,150,150), "normal")
+        self.plat1 = Platform(50, WIDTH, -50, HEIGHT,)
+        # self.plat2 = Platform(WIDTH, 50, 0, HEIGHT-50, (150,150,150), "normal")
         self.all_sprites.add(self.plat1)
 
         self.platforms.add(self.plat1)
@@ -94,16 +88,12 @@ class Game:
                     self.player.jump()
     def update(self):
         self.all_sprites.update()
-        mhits = pg.sprite.spritecollide(self.player, self.enemies, False)
-        if mhits:
-            if abs(self.player.vel.x) > abs(self.player.vel.y):
-                self.player.vel.x *= -1
-            else:
-                self.player.vel.y *= -1
-            
+        
+        # if the player is falling
         if self.player.vel.y > 0:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
+                self.player.standing = True
                 if hits[0].variant == "disappearing":
                     hits[0].kill()
                 elif hits[0].variant == "bouncey":
@@ -112,10 +102,14 @@ class Game:
                 else:
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = 0
+            else:
+                self.player.standing = False
 
     def draw(self):
         self.screen.fill(BLUE)
         self.all_sprites.draw(self.screen)
+        if self.player.standing:
+            self.draw_text("I hit a plat!", 24, WHITE, WIDTH/2, HEIGHT/2)
         # is this a method or a function?
         pg.display.flip()
     def draw_text(self, text, size, color, x, y):

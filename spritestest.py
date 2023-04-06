@@ -6,8 +6,12 @@ from random import randint
 
 vec = pg.math.Vector2
 
-# player class
 
+
+
+# Game loop
+running = True
+# player class
 class Player(Sprite):
     def __init__(self, game):
         Sprite.__init__(self)
@@ -39,7 +43,6 @@ class Player(Sprite):
         #     else:
         #         PAUSED = False
         #         print(PAUSED)
-    # ...
     def jump(self):
         self.rect.x += 1
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
@@ -73,7 +76,7 @@ class Player(Sprite):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
         self.rect.midbottom = self.pos
-    
+# Mob Class  
 class Mob(Sprite):
     def __init__(self,width,height, color):
         Sprite.__init__(self)
@@ -88,7 +91,6 @@ class Mob(Sprite):
         self.vel = vec(randint(1,5),randint(1,5))
         self.acc = vec(1,1)
         self.cofric = 0.01
-    
     def inbounds(self):
         if self.rect.x > WIDTH:
             self.vel.x *= -1
@@ -102,50 +104,24 @@ class Mob(Sprite):
         if self.rect.y > HEIGHT:
             self.vel.y *= -1
             # self.acc = self.vel * -self.cofric
+    # def update(self):
+    #     self.inbounds()
+    #     # self.pos.x += self.vel.x
+    #     # self.pos.y += self.vel.y
+    #     self.pos += self.vel
+    #     self.rect.center = self.pos
     def update(self):
-        self.inbounds()
-        # self.pos.x += self.vel.x
-        # self.pos.y += self.vel.y
-        self.pos += self.vel
-        self.rect.center = self.pos
-
-class Bullet(Sprite):
-    def __init__(self, x, y):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((10, 20))
-        self.image.fill(RED)
-        self.rect = self.image.get_rect()
-        self.rect.bottom = y
-        self.rect.centerx = x
-        self.speedy = -10
-    def update(self):
-        self.rect.y += self.speedy
-        # kill if it moves off the top of the screen
-        if self.rect.bottom < 0:
-            self.kill()
-    for event in pg.event.get():
-    # check for closing window
-        if event.type == pg.QUIT:
-            running = False
-        elif event.type == pg.KEYDOWN:
-            if event.key == pg.KEYUP:
-                Player.shoot()
-                bullets = pg.sprite.Group()
-    def shoot(self):
-        bullet = Bullet(self.rect.centerx, self.rect.top)
-        self.all_sprites.add(bullet)
-        bullet.add(bullet)
-        # Update
-        self.all_sprites.update()
-    # check to see if a bullet hit a mob
-    hits = pg.sprite.groupcollide(Mob, Bullet=True,)
-    for hit in hits:
-        m = Mob()
-        # self.all_sprites.add(m)
-        Mob.add(m)
+        if not self.attached_now:
+            self.acc = vec(0, PLAYER_GRAV)
+            self.jump()
+            self.acc.x = self.vel.x * PLAYER_FRICTION
+            self.vel += self.acc
+            self.pos += self.vel + 0.5 * self.acc
+        else:
+            self.attached(self.game.player)
+        self.rect.midbottom = self.pos   
 
 # create a new platform class...
-
 class Platform(Sprite):
     def __init__(self, x, y, width, height, color, variant):
         Sprite.__init__(self)
@@ -155,6 +131,7 @@ class Platform(Sprite):
         self.color = color
         self.image.fill(self.color)
         self.rect = self.image.get_rect()
+        self.vel = 0.4
         self.rect.x = x
         self.rect.y = y
         self.variant = variant
