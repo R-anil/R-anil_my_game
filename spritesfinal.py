@@ -170,6 +170,9 @@ class Platform(Sprite):
         self.rect.x = x
         self.rect.y = y
         self.variant = variant
+    def update(self):
+        if self.variant == "moving and disappearing":
+            self.rect.x += 1
     
 # # This is a platform that can move
 # class MovingPlatform(Sprite):

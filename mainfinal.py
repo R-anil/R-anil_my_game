@@ -145,7 +145,6 @@ class Game:
         text_rect = text_surface.get_rect()
         text_rect.midtop = (x,y)
         self.screen.blit(text_surface, text_rect)
-       
     def get_mouse_now(self):
         x,y = pg.mouse.get_pos()
         return (x,y)
