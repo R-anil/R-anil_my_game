@@ -95,7 +95,7 @@ class Player(Sprite):
         self.input()
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
-        self.rotate()
+        # self.rotate()
         self.rect.midbottom = self.pos
 #  Enemy class
 class Mob(Sprite):
@@ -171,7 +171,7 @@ class Platform(Sprite):
         self.rect.y = y
         self.variant = variant
     def update(self):
-        if self.variant == "moving and disappearing":
+        if self.variant == "moving":
             self.rect.x += 1
     
 # # This is a platform that can move
