@@ -19,6 +19,8 @@ Image for player
 
 Add a different colored platform which is basically the end goal
 
+Say "You Won" once end goal is reached
+
 Reach goal:
  
 Use rotating images to get to the black platform, 
@@ -72,6 +74,7 @@ class Game:
     def new(self):
         # starting a new game
         self.score = 0
+        self.you_win = False
         self.load_data()
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
@@ -128,6 +131,8 @@ class Game:
                 elif hits[0].variant == "bouncey":
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = -PLAYER_JUMP
+                elif hits[0].variant == "end goal":
+                    self.you_win = True
                 else:
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = 0
@@ -135,7 +140,9 @@ class Game:
     def draw(self):
         self.screen.fill(BLUE)
         self.all_sprites.draw(self.screen)
-        self.draw_text(str(self.player.rot), 24, WHITE, WIDTH/2, HEIGHT/2)
+        # self.draw_text(str(self.player.rot), 24, WHITE, WIDTH/2, HEIGHT/2)
+        if self.you_win:
+          self.draw_text(str("You won!!!"), 24, WHITE, WIDTH/2, HEIGHT/2)
         # is this a method or a function?
         pg.display.flip()
     def draw_text(self, text, size, color, x, y):
