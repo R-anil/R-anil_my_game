@@ -48,13 +48,7 @@ from os import path
 game_folder = os.path.dirname(__file__)
 img_folder = os.path.join(game_folder, "images")
 
-def draw_text(text, size, color, x, y):
-    font_name = pg.font.match_font('arial')
-    font = pg.font.Font(font_name, size)
-    text_surface = font.render(text, True, color)
-    text_rect = text_surface.get_rect()
-    text_rect.midtop = (x,y)
-    Screen.blit(text_surface, text_rect)
+
     
 # create game class in order to pass properties to the sprites file
 class Game:
@@ -67,7 +61,7 @@ class Game:
         self.clock = pg.time.Clock()
         self.running = True
         print(self.screen)
-    
+# image for sprites
     def load_data(self):
         self.player_img = pg.image.load(path.join(img_folder, "bell-ar-man.png")).convert()
 

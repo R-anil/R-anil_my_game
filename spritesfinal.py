@@ -78,6 +78,7 @@ class Player(Sprite):
             print("i am off the bottom of the screen")
         if self.rect.y < 0:
             print("i am off the top of the screen...")
+    # What happens when player come in contacxt with mob
     def mob_collide(self):
             hits = pg.sprite.spritecollide(self, self.game.enemies, True)
             if hits:
@@ -119,18 +120,6 @@ class Mob(Sprite):
         self.cofric = 0.01
         print(self.vel.x)
         print(self.vel.y)
-    # # makes the mob jump
-    # def jump(self):
-    #     hits = pg.sprite.spritecollide(self, self.game.platforms, False)
-    #     if hits:
-    #         if self.vel.y > 1:
-    #             self.vel = vec(30,-10)
-    #             print(self.vel.y)
-    #         else:
-    #             self.pos.y = hits[0].rect.top
-    #             self.vel.y = 0
-    #     else:
-    #         self.vel.x = 0
     def inbounds(self):
         if self.rect.x > WIDTH:
             self.vel.x *= -1
@@ -161,6 +150,7 @@ class Mob(Sprite):
 class Platform(Sprite):
     def __init__(self, x, y, width, height, color, variant):
         Sprite.__init__(self)
+        # properties of platform class
         self.width = width
         self.height = height
         self.image = pg.Surface((self.width,self.height))
@@ -173,7 +163,7 @@ class Platform(Sprite):
     def update(self):
         if self.variant == "moving":
             self.rect.x += 1
-    
+
 # # This is a platform that can move
 # class MovingPlatform(Sprite):
 #     def __init__(self, x, y, width, height, color,):
